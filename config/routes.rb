@@ -1,6 +1,10 @@
 Rails.application.routes.draw do
   # API
-  # TODO: add routes
+  namespace :api do
+    namespace :v1 do
+      get 'airports', to: 'airports#index'
+    end
+  end
 
   # Delegate to Vue
   root 'vue#index'

@@ -30,4 +30,6 @@
 #  index_airports_on_name                    (name)
 #
 class Airport < ApplicationRecord
+  scope :by_capacity_descending, -> { order('passenger_volume DESC NULLS LAST') }
+  scope :by_countries, ->(countries) { where(country_alpha2: countries) if countries&.any? }
 end

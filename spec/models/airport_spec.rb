@@ -32,5 +32,23 @@
 require 'rails_helper'
 
 RSpec.describe Airport, type: :model do
-  pending "add some examples to (or delete) #{__FILE__}"
+  describe '.by_capacity_descending' do
+    it 'orders records by passenger_volume descending' do
+      ap1 = create(:airport, :fra, passenger_volume: 123456)
+      ap2 = create(:airport, :muc, passenger_volume: 543982)
+      ap3 = create(:airport, :zrh)
+
+      expect(Airport.by_capacity_descending).to eq([ap2, ap1, ap3])
+    end
+  end
+
+  describe '.by_countries' do
+    before do
+      %i[fra muc zrh vie inn grz].each { |iata| create(:airport, iata) }
+    end
+
+    it 'filters records by country_alpha2' do
+      expect(Airport.by_countries(%w[DE AT]).pluck(:iata)).to eq(%w[FRA MUC VIE INN GRZ])
+    end
+  end
 end
